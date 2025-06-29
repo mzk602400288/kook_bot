@@ -7,7 +7,7 @@ import threading
 import websocket
 import difflib
 
-TOKEN = '1/MzQyODc=/w3wyFI7IrGImypTYs6cEUw=='
+TOKEN = ''
 GATEWAY_API = 'https://www.kookapp.cn/api/v3/gateway'
 API_BASE = 'https://www.kookapp.cn/api/v3'
 
