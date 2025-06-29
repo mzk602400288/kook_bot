@@ -1,50 +1,50 @@
 #!/bin/bash
 
-# 1. 克隆 GitHub 仓库
-echo "🌐 克隆 GitHub 仓库..."
-git clone https://github.com/mzk602400288/kook_bot.git /home/bobo/kook/123
+set -e  # 出错自动退出
 
-# 2. 更新系统和安装必要的依赖
-echo "🌐 更新系统包列表..."
+INSTALL_DIR="/etc/kook/kook_bot"
+
+# 1. 克隆 GitHub 仓库
+echo "🌐 正在克隆 KOOK Bot 仓库到 $INSTALL_DIR ..."
+sudo rm -rf "$INSTALL_DIR"
+sudo git clone https://github.com/mzk602400288/kook_bot.git "$INSTALL_DIR"
+
+# 2. 安装系统依赖
+echo "📦 安装系统依赖（python3、pip、venv、npm、git）..."
 sudo apt update
 sudo apt install -y python3 python3-pip python3-venv npm curl git
 
-# 3. 安装 PM2（如果未安装）
-if ! command -v pm2 &> /dev/null
-then
+# 3. 安装 PM2（如未安装）
+if ! command -v pm2 &> /dev/null; then
     echo "⚡ 安装 PM2..."
-    sudo npm install pm2@latest -g
+    sudo npm install -g pm2
 else
     echo "✅ PM2 已安装"
 fi
 
-# 4. 检查虚拟环境是否已创建，如果未创建则创建虚拟环境
-if [ ! -d "/home/bobo/kook/123/venv" ]; then
+# 4. 创建虚拟环境
+cd "$INSTALL_DIR"
+if [ ! -d "venv" ]; then
     echo "🛠️ 创建虚拟环境..."
-    python3 -m venv /home/bobo/kook/123/venv
+    python3 -m venv venv
 fi
 
-# 5. 激活虚拟环境
-echo "🔧 激活虚拟环境..."
-source /home/bobo/kook/123/venv/bin/activate
-
-# 6. 安装必要的 Python 包
-echo "📦 安装必要的 Python 包..."
+# 5. 激活虚拟环境并安装依赖
+echo "🔧 激活虚拟环境并安装依赖包..."
+source venv/bin/activate
 pip install --upgrade pip
-pip install websocket-client
+pip install requests websocket-client
 
-# 7. 复制 resource_translations.json 文件到目标位置
-echo "📁 复制资源翻译文件..."
-cp /home/bobo/kook/123/resource_translations.json /home/bobo/kook/123/resource_translations.json
+# 6. 启动 KOOK Bot（使用虚拟环境的 Python）
+echo "🚀 使用 PM2 启动 KOOK Bot..."
+pm2 start kook_bot.py --name kook_bot --interpreter "$INSTALL_DIR/venv/bin/python"
 
-# 8. 使用 PM2 启动 'kook_bot.py'
-echo "🚀 启动 KOOK Bot..."
-pm2 start /home/bobo/kook/123/kook_bot.py --interpreter python3 --name kook_bot
-
-# 9. 配置 PM2 开机自启动
-echo "🔄 设置 PM2 开机自启动..."
-pm2 startup
+# 7. 设置 PM2 开机自启
+echo "🔄 配置 PM2 开机自启..."
 pm2 save
+pm2 startup | tail -n 1 | bash
 
-# 10. 完成
-echo "✅ KOOK Bot 已成功启动并设置为开机自启动!"
+echo ""
+echo "✅ KOOK Bot 已成功部署并运行！"
+echo "📜 查看日志：pm2 logs kook_bot"
+echo "📋 进程状态：pm2 list"
