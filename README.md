@@ -20,3 +20,25 @@ pm2 logs kook_bot #查看日志
 pm2 stop kook_bot #终止进程
 pm2 restart kook_bot #重启进程
 
+以下是地图文件目录 包括恐龙分布 资源分布 请遵循以下格式部署文件相关文件地址我会贴出后期
+kook_bot/
+├── resource_translations.json   # 地图翻译文件（如果有）
+├── maps/
+│   ├── The Island/
+│   │   ├── resource1.png
+│   │   ├── resource2.png
+│   │   └── ...
+│   ├── Ragnarok/
+│   │   ├── resource1.png
+│   │   ├── resource2.png
+│   │   └── ...
+│   ├── Extinction/
+│   │   ├── resource1.png
+│   │   ├── resource2.png
+│   │   └── ...
+│   ├── Aberration/
+│   │   ├── resource1.png
+│   │   ├── resource2.png
+│   │   └── ...
+│   └── ...  # 其他地图
+└── setup_kook_bot.sh  # 安装脚本
