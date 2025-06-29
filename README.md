@@ -11,3 +11,11 @@
 ```bash
 git clone https://github.com/mzk602400288/kook_bot.git
 cd kook_bot
+
+chmod +x setup_kook_bot.sh  # 给脚本添加执行权限
+./setup_kook_bot.sh  # 执行安装脚本
+
+pm2 logs kook_bot #查看日志
+pm2 stop kook_bot #终止进程
+pm2 restart kook_bot #重启进程
+
