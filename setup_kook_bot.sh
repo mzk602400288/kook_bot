@@ -33,14 +33,18 @@ echo "📦 安装必要的 Python 包..."
 pip install --upgrade pip
 pip install websocket-client
 
-# 7. 使用 PM2 启动 'kook_bot.py'
+# 7. 复制 resource_translations.json 文件到目标位置
+echo "📁 复制资源翻译文件..."
+cp /home/bobo/kook/123/resource_translations.json /home/bobo/kook/123/resource_translations.json
+
+# 8. 使用 PM2 启动 'kook_bot.py'
 echo "🚀 启动 KOOK Bot..."
 pm2 start /home/bobo/kook/123/kook_bot.py --interpreter python3 --name kook_bot
 
-# 8. 配置 PM2 开机自启动
+# 9. 配置 PM2 开机自启动
 echo "🔄 设置 PM2 开机自启动..."
 pm2 startup
 pm2 save
 
-# 9. 完成
+# 10. 完成
 echo "✅ KOOK Bot 已成功启动并设置为开机自启动!"
